@@ -91,11 +91,10 @@ public class Algorithmus {
              Tile rechtsOben    = new Tile(xCord+1, yCord-1, labyrinth[xCord+1][yCord-1]);
              Tile linksUnten    = new Tile(xCord-1, yCord+1, labyrinth[xCord-1][yCord+1]);
              Tile rechtsUnten   = new Tile(xCord+1, yCord+1, labyrinth[xCord+1][yCord+1]);
-             
+
 
              }
          }
-    }
 
     private static void generateStartAndGoal() {
         int xmitte = breite/2;
