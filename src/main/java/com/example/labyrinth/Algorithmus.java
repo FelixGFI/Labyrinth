@@ -84,12 +84,12 @@ public class Algorithmus {
                 if(isNextToMiddle(tryTile2) && !middleReached) {
                     if(isNextToMiddle(tryTile)) {
                         setATileOnRightPath(tryTile);
-                        allPathTiles.add(tryTile);
+                        //allPathTiles.add(tryTile);
                         middleReached = true;
                         break;
                     } else {
                         setATileOnRightPath(tryTile);
-                        allPathTiles.add(tryTile);
+                        //allPathTiles.add(tryTile);
                         setATileOnRightPath(tryTile2);
                         allPathTiles.add(tryTile2);
                         middleReached = true;
@@ -97,13 +97,13 @@ public class Algorithmus {
                     }
                 } else if(isNextToMiddle(tryTile) && !middleReached){
                     setATileOnRightPath(tryTile);
-                    allPathTiles.add(tryTile);
+                    //allPathTiles.add(tryTile);
                     middleReached = true;
                     break;
                 } else {
                     if(!isAllreadySet(tryTile) && !isAllreadySet(tryTile2)) {
                         setATileOnRightPath(tryTile);
-                        allPathTiles.add(tryTile);
+                        //allPathTiles.add(tryTile);
                         setATileOnRightPath(tryTile2);
                         allPathTiles.add(tryTile2);
                         failedTrysToGenerateNextTile = 0;
@@ -195,35 +195,13 @@ public class Algorithmus {
             if(failedTrysToGenerateNextTile > 10 && !middleReached) {
                 try{
                     labyrinth[aktTile.getxCord()][aktTile.getyCord()] = RIGHT_PATH;
-                    aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 3);
-                    labyrinth[aktTile.getxCord()][aktTile.getyCord()] = AKT_PATH;
-                    failedTrysToGenerateNextTile = 0;
-                } catch (Exception e) {
-                    System.out.println("Generation Failed. Please Try again.");
-                }
-            } else if(failedTrysToGenerateNextTile > 10 && middleReached) {
-                try {
-
-                    labyrinth[aktTile.getxCord()][aktTile.getyCord()] = RIGHT_PATH;
-                    aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 2);
+                    aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
                     labyrinth[aktTile.getxCord()][aktTile.getyCord()] = AKT_PATH;
                     failedTrysToGenerateNextTile = 0;
                 } catch (Exception e) {
                     System.out.println("Generation Failed. Please Try again.");
                 }
             }
-
-            /*else if(failedTrysToGenerateNextTile > 10 && middleReached) {
-                int randomTileIndex = (int) (Math.random() * allPathTiles.size());
-                try {
-                    labyrinth[aktTile.getxCord()][aktTile.getyCord()] = RIGHT_PATH;
-                    aktTile = allPathTiles.get(randomTileIndex);
-                    labyrinth[aktTile.getxCord()][aktTile.getyCord()] = AKT_PATH;
-                    failedTrysToGenerateNextTile = 0;
-                } catch (Exception e) {
-                    System.out.println("Generation Failed. Please Try again.");
-                }
-            }*/
         }
     }
     //TODO >>> -/\---/\---/\---/\---/\---/\- <<<
@@ -431,7 +409,6 @@ public class Algorithmus {
         setGivenTileInLabyrinth(aktTile);
         setGivenTileInLabyrinth(diesesTile);
         aktTile= diesesTile;
-        allPathTiles.add(aktTile);
     }
 
     private static void setGivenTileInLabyrinth (Tile tile){
