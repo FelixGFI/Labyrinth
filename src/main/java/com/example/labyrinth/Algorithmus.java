@@ -7,20 +7,21 @@ public class Algorithmus {
     static int breite = 50;
     static int[][] labyrinth = new int[breite][hoehe];
 
-    static int empty = 0;
-    static int wall = 1;
-    static int sidePath = 2;
-    static int rightPath = 3;
-    static int middle = 4;
-    static int rand = 5;
-    static int aktPath = 6;
+    static final int EMPTY = 0;
+    static final int WALL = 1;
+    static final int SIDE_PATH = 2;
+    static final int RIGHT_PATH = 3;
+    static final int MIDDLE = 4;
+    static final int RAND = 5;
+    static final int AKT_PATH = 6;
     static Tile aktTile;
 
     static char direction;
-    static char dlinks = 'l';
-    static char drechts = 'r';
-    static char doben = 'o';
-    static char dunten = 'u';
+
+    static final char DIR_LINKS = 'l';
+    static final char DIR_RECHTS = 'r';
+    static final char DIR_OBEN = 'o';
+    static final char DIR_UNTEN = 'u';
 
     static ArrayList<Tile> allPathTiles = new ArrayList<>();
 
@@ -55,13 +56,13 @@ public class Algorithmus {
             /*while(!directionAllright) {*/
                 int directionInt = (int) (Math.random()* 4);
                 if(directionInt == 0) {
-                    tryDirection = drechts;
+                    tryDirection = DIR_RECHTS;
                 } else if(directionInt == 1) {
-                    tryDirection = doben;
+                    tryDirection = DIR_OBEN;
                 } else if(directionInt == 2) {
-                    tryDirection = dlinks;
+                    tryDirection = DIR_LINKS;
                 } else if(directionInt == 3) {
-                    tryDirection = dunten;
+                    tryDirection = DIR_UNTEN;
                 }
                 /*failedTrysToGenerateNextTile++;
                 if(tryDirection != getOpositDirection(direction) && tryDirection != ' '){
@@ -114,19 +115,19 @@ public class Algorithmus {
             }
 
             boolean tileGoodToBeSet = false;
-            if (tryDirection == drechts) {
+            if (tryDirection == DIR_RECHTS) {
                 if(!isPathOrRand(links) && !isPath(linksOben) && !isPath(linksUnten)) {
                     tileGoodToBeSet = true;
                 }
-            } else if(tryDirection == dlinks) {
+            } else if(tryDirection == DIR_LINKS) {
                 if(!isPathOrRand(rechts) && !isPath(rechtsOben) && !isPath(rechtsUnten)) {
                     tileGoodToBeSet = true;
                 }
-            } else if(tryDirection == doben) {
+            } else if(tryDirection == DIR_OBEN) {
                 if(!isPathOrRand(unten) && !isPath(rechtsUnten) && !isPath(linksUnten)) {
                     tileGoodToBeSet = true;
                 }
-            } else if(tryDirection == dunten) {
+            } else if(tryDirection == DIR_UNTEN) {
                 if(!isPathOrRand(oben) && !isPath(rechtsOben) && !isPath(linksOben)) {
                     tileGoodToBeSet = true;
                 }
@@ -233,7 +234,7 @@ public class Algorithmus {
             }
 
             if(failedTrysToGenerateNextTile > 50) {
-                labyrinth[aktTile.getxCord()][aktTile.getyCord()] = rightPath;
+                labyrinth[aktTile.getxCord()][aktTile.getyCord()] = RIGHT_PATH;
 
                 try{
                     aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 3);
@@ -241,7 +242,7 @@ public class Algorithmus {
                     aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
                 }
                 aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
-                labyrinth[aktTile.getxCord()][aktTile.getyCord()] = aktPath;
+                labyrinth[aktTile.getxCord()][aktTile.getyCord()] = AKT_PATH;
                 failedTrysToGenerateNextTile = 0;
             }
         }
@@ -251,44 +252,44 @@ public class Algorithmus {
         if(givenTile == null) {
             return true;
         } else {
-            return givenTile.getTileStatus() == rightPath || givenTile.getTileStatus() == sidePath || givenTile.getTileStatus() == aktPath || givenTile.getTileStatus() == middle;
+            return givenTile.getTileStatus() == RIGHT_PATH || givenTile.getTileStatus() == SIDE_PATH || givenTile.getTileStatus() == AKT_PATH || givenTile.getTileStatus() == MIDDLE;
         }
     }
     private static boolean isPathOrRand(Tile givenTile) {
         if(givenTile == null) {
             return true;
         } else {
-            return givenTile.getTileStatus() == rightPath || givenTile.getTileStatus() == sidePath || givenTile.getTileStatus() == aktPath || givenTile.getTileStatus() == middle || givenTile.getTileStatus() == rand;
+            return givenTile.getTileStatus() == RIGHT_PATH || givenTile.getTileStatus() == SIDE_PATH || givenTile.getTileStatus() == AKT_PATH || givenTile.getTileStatus() == MIDDLE || givenTile.getTileStatus() == RAND;
         }
     }
 
     private static char getOpositDirection(char direction) {
         char opositeDirection = ' ';
-        if(direction == dlinks) {
-            opositeDirection = drechts;
-        } else if(direction == drechts) {
-            opositeDirection = dlinks;
-        } else if(direction == doben) {
-            opositeDirection = dunten;
-        } else if (direction == dunten) {
-            opositeDirection = doben;
+        if(direction == DIR_LINKS) {
+            opositeDirection = DIR_RECHTS;
+        } else if(direction == DIR_RECHTS) {
+            opositeDirection = DIR_LINKS;
+        } else if(direction == DIR_OBEN) {
+            opositeDirection = DIR_UNTEN;
+        } else if (direction == DIR_UNTEN) {
+            opositeDirection = DIR_OBEN;
         }
         return opositeDirection;
     }
 
     private static boolean isNextToMiddle(Tile links, Tile oben, Tile rechts, Tile unten) {
-        return links.getTileStatus() == middle || rechts.getTileStatus() == middle || oben.getTileStatus() == middle || unten.getTileStatus() == middle;
+        return links.getTileStatus() == MIDDLE || rechts.getTileStatus() == MIDDLE || oben.getTileStatus() == MIDDLE || unten.getTileStatus() == MIDDLE;
     }
 
     private static Tile getNextTile(char tryDirection) throws Exception {
         Tile nextTile = null;
-        if(tryDirection == dlinks) {
+        if(tryDirection == DIR_LINKS) {
             nextTile = new Tile(aktTile.getxCord() + 1, aktTile.getyCord(), labyrinth[aktTile.getxCord() + 1][aktTile.getyCord()]);
-        } else if(tryDirection == drechts) {
+        } else if(tryDirection == DIR_RECHTS) {
             nextTile = new Tile(aktTile.getxCord() - 1, aktTile.getyCord(), labyrinth[aktTile.getxCord() - 1][aktTile.getyCord()]);
-        } else if(tryDirection == doben) {
+        } else if(tryDirection == DIR_OBEN) {
             nextTile = new Tile(aktTile.getxCord(), aktTile.getyCord() + 1, labyrinth[aktTile.getxCord()][aktTile.getyCord() + 1]);
-        } else if(tryDirection == dunten) {
+        } else if(tryDirection == DIR_UNTEN) {
             nextTile = new Tile(aktTile.getxCord(), aktTile.getyCord() - 1, labyrinth[aktTile.getxCord()][aktTile.getyCord()-1]);
         } else {
 
@@ -428,13 +429,13 @@ public class Algorithmus {
     }*/
 
     private static void setATileToWall(Tile diesesTile) {
-        diesesTile.setTileStatus(wall);
+        diesesTile.setTileStatus(WALL);
         setGivenTileInLabyrinth(diesesTile);
     }
 
     private static void setATileOnRightPath(Tile diesesTile) {
-        aktTile.setTileStatus(rightPath);
-        diesesTile.setTileStatus(aktPath);
+        aktTile.setTileStatus(RIGHT_PATH);
+        diesesTile.setTileStatus(AKT_PATH);
         setGivenTileInLabyrinth(aktTile);
         setGivenTileInLabyrinth(diesesTile);
         aktTile= diesesTile;
@@ -447,31 +448,31 @@ public class Algorithmus {
     private static void generateStartAndGoal() {
         int xmitte = breite/2;
         int ymitte = hoehe/2;
-        labyrinth[xmitte][ymitte] = middle;
-        labyrinth[xmitte + 1][ymitte] = middle;
-        labyrinth[xmitte - 1][ymitte] = middle;
-        labyrinth[xmitte + 1][ymitte + 1] = middle;
-        labyrinth[xmitte - 1][ymitte + 1] = middle;
-        labyrinth[xmitte + 1][ymitte - 1] = middle;
-        labyrinth[xmitte - 1][ymitte - 1] = middle;
-        labyrinth[xmitte][ymitte + 1] = middle;
-        labyrinth[xmitte][ymitte - 1] = middle;
+        labyrinth[xmitte][ymitte] = MIDDLE;
+        labyrinth[xmitte + 1][ymitte] = MIDDLE;
+        labyrinth[xmitte - 1][ymitte] = MIDDLE;
+        labyrinth[xmitte + 1][ymitte + 1] = MIDDLE;
+        labyrinth[xmitte - 1][ymitte + 1] = MIDDLE;
+        labyrinth[xmitte + 1][ymitte - 1] = MIDDLE;
+        labyrinth[xmitte - 1][ymitte - 1] = MIDDLE;
+        labyrinth[xmitte][ymitte + 1] = MIDDLE;
+        labyrinth[xmitte][ymitte - 1] = MIDDLE;
 
         int side = (int) (Math.random() * 4);
         int x = -1;
         int y = -1;
         if(side == 0) {
             x = 0;
-            direction = dlinks;
+            direction = DIR_LINKS;
         } else if(side == 1) {
             y = 0;
-            direction = doben;
+            direction = DIR_OBEN;
         } else if(side == 2) {
             x = breite - 1;
-            direction = drechts;
+            direction = DIR_RECHTS;
         } else if(side == 3) {
             y = hoehe - 1;
-            direction = dunten;
+            direction = DIR_UNTEN;
         }
 
 
@@ -481,7 +482,7 @@ public class Algorithmus {
         if(x == -1) {
             x = (int)( Math.random() * (breite - 2)) + 1;
         }
-        labyrinth[x][y] = aktPath;
+        labyrinth[x][y] = AKT_PATH;
         aktTile = new Tile(x, y, labyrinth[x][y]);
 
 
@@ -489,29 +490,29 @@ public class Algorithmus {
 
     private static void generateBorder() {
         for(int y = 0; y < hoehe; y++) {
-            labyrinth[0][y] = rand;
-            labyrinth[breite-1][y] = rand;
+            labyrinth[0][y] = RAND;
+            labyrinth[breite-1][y] = RAND;
         }
         for(int x = 0; x < breite; x++) {
-            labyrinth[x][0] = rand;
-            labyrinth[x][hoehe-1] = rand;
+            labyrinth[x][0] = RAND;
+            labyrinth[x][hoehe-1] = RAND;
         }
     }
 
     public static void printArray() {
         for(int y = 0; y < hoehe; y++){
             for (int x = 0; x < breite; x++) {
-                if(labyrinth[x][y] == wall) {
+                if(labyrinth[x][y] == WALL) {
                     System.out.print("x");
-                } else if (labyrinth[x][y] == sidePath) {
+                } else if (labyrinth[x][y] == SIDE_PATH) {
                     System.out.print("s");
-                } else if (labyrinth[x][y] == rightPath) {
+                } else if (labyrinth[x][y] == RIGHT_PATH) {
                     System.out.print("p");
-                }else if (labyrinth[x][y] == middle) {
+                }else if (labyrinth[x][y] == MIDDLE) {
                     System.out.print("z");
-                } else if (labyrinth[x][y] == rand) {
+                } else if (labyrinth[x][y] == RAND) {
                     System.out.print("+");
-                } else if(labyrinth[x][y] == aktPath) {
+                } else if(labyrinth[x][y] == AKT_PATH) {
                     System.out.print("c");
                 } else {
                     System.out.print(" ");
