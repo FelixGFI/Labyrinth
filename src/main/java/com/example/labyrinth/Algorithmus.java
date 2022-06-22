@@ -25,7 +25,7 @@ public class Algorithmus {
     static ArrayList<Tile> allPathTiles = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             generateLabyrinth();
             printArray();
         }
@@ -77,8 +77,7 @@ public class Algorithmus {
             }*/
 
 
-            System.out.println(tryDirection);
-            System.out.println();
+
             Tile links         = new Tile(xCord-1, yCord, labyrinth[xCord-1][yCord]);
             Tile oben          = new Tile(xCord, yCord-1, labyrinth[xCord][yCord-1]);
             Tile rechts        = new Tile(xCord+1, yCord, labyrinth[xCord+1][yCord]);
@@ -88,6 +87,31 @@ public class Algorithmus {
             Tile rechtsOben    = new Tile(xCord+1, yCord-1, labyrinth[xCord+1][yCord-1]);
             Tile linksUnten    = new Tile(xCord-1, yCord+1, labyrinth[xCord-1][yCord+1]);
             Tile rechtsUnten   = new Tile(xCord+1, yCord+1, labyrinth[xCord+1][yCord+1]);
+
+            Tile linksLinks = null;
+            Tile obenOben = null;
+            Tile rechtsRechts = null;
+            Tile untenUnten = null;
+            try {
+
+            } catch (IndexOutOfBoundsException e) {
+                linksLinks    = new Tile(xCord-2, yCord, labyrinth[xCord-2][yCord]);
+            }
+            try {
+                obenOben    = new Tile(xCord, yCord-2, labyrinth[xCord][yCord-2]);
+            } catch (IndexOutOfBoundsException e) {
+
+            }
+            try {
+                rechtsRechts    = new Tile(xCord+2, yCord, labyrinth[xCord+2][yCord]);
+            } catch (IndexOutOfBoundsException e) {
+
+            }
+            try {
+                untenUnten    = new Tile(xCord, yCord+2, labyrinth[xCord][yCord+2]);
+            } catch (IndexOutOfBoundsException e) {
+
+            }
 
             boolean tileGoodToBeSet = false;
             if (tryDirection == drechts) {
@@ -205,26 +229,37 @@ public class Algorithmus {
             direction = tryDirection;
             */
             if(isNextToMiddle(links, oben, rechts, unten)) {
-                System.out.println("middle reached");
                 break;
             }
 
             if(failedTrysToGenerateNextTile > 50) {
                 labyrinth[aktTile.getxCord()][aktTile.getyCord()] = rightPath;
+
+                try{
+                    aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 3);
+                } catch (Exception e) {
+                    aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
+                }
                 aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
                 labyrinth[aktTile.getxCord()][aktTile.getyCord()] = aktPath;
                 failedTrysToGenerateNextTile = 0;
             }
-
-            System.out.println(failedTrysToGenerateNextTile + "");
         }
     }
 
     private static boolean isPath(Tile givenTile) {
-        return givenTile.getTileStatus() == rightPath || givenTile.getTileStatus() == sidePath || givenTile.getTileStatus() == aktPath;
+        if(givenTile == null) {
+            return true;
+        } else {
+            return givenTile.getTileStatus() == rightPath || givenTile.getTileStatus() == sidePath || givenTile.getTileStatus() == aktPath || givenTile.getTileStatus() == middle;
+        }
     }
     private static boolean isPathOrRand(Tile givenTile) {
-        return givenTile.getTileStatus() == rightPath || givenTile.getTileStatus() == sidePath || givenTile.getTileStatus() == aktPath || givenTile.getTileStatus() == rand;
+        if(givenTile == null) {
+            return true;
+        } else {
+            return givenTile.getTileStatus() == rightPath || givenTile.getTileStatus() == sidePath || givenTile.getTileStatus() == aktPath || givenTile.getTileStatus() == middle || givenTile.getTileStatus() == rand;
+        }
     }
 
     private static char getOpositDirection(char direction) {
@@ -442,16 +477,13 @@ public class Algorithmus {
 
         if(y == -1) {
             y = (int)( Math.random() * (hoehe - 2)) + 1;
-            System.out.println("y = " + y);
         }
         if(x == -1) {
             x = (int)( Math.random() * (breite - 2)) + 1;
-            System.out.println("x = " + x);
         }
         labyrinth[x][y] = aktPath;
         aktTile = new Tile(x, y, labyrinth[x][y]);
 
-        System.out.println("Initial Side; " + direction);
 
     }
 
