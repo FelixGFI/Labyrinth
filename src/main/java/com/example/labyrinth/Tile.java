@@ -34,4 +34,26 @@ public class Tile {
     public void setTileStatus(int tileStatus) {
         this.tileStatus = tileStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "xCord=" + xCord +
+                ", yCord=" + yCord +
+                ", tileStatus=" + tileStatus +
+                '}';
+    }
+
+    public boolean equalsThisTile(Tile otherTile) {
+        if (otherTile.getTileStatus() == this.tileStatus && otherTile.getxCord() == this.xCord && otherTile.getyCord() == this.yCord) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int[][] setTileInLabyrinth(int[][] labyrinth) {
+        labyrinth[this.getxCord()][this.getyCord()] = this.getTileStatus();
+        return labyrinth;
+    }
 }
