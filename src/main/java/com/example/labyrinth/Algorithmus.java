@@ -84,26 +84,20 @@ public class Algorithmus {
                 if(isNextToMiddle(tryTile2) && !middleReached) {
                     if(isNextToMiddle(tryTile)) {
                         setATileOnRightPath(tryTile);
-                        //allPathTiles.add(tryTile);
                         middleReached = true;
-                        //break;
                     } else {
                         setATileOnRightPath(tryTile);
-                        //allPathTiles.add(tryTile);
                         setATileOnRightPath(tryTile2);
                         allPathTiles.add(tryTile2);
                         middleReached = true;
-                        //break;
                     }
                 } else if(isNextToMiddle(tryTile) && !middleReached){
                     setATileOnRightPath(tryTile);
-                    //allPathTiles.add(tryTile);
                     middleReached = true;
-                    //break;
                 } else {
                     if(!isAllreadySet(tryTile) && !isAllreadySet(tryTile2)) {
                         setATileOnRightPath(tryTile);
-                        //allPathTiles.add(tryTile);
+
                         setATileOnRightPath(tryTile2);
                         allPathTiles.add(tryTile2);
                         failedTrysToGenerateNextTile = 0;
@@ -112,80 +106,7 @@ public class Algorithmus {
                         failedTrysToGenerateNextTile++;
                     }
                 }
-
-
             }
-
-
-            /*tryTile = getNextTile(tryDirection);
-
-            int xCord = aktTile.getxCord();
-            int yCord = aktTile.getyCord();
-
-            Tile links         = new Tile(xCord-1, yCord, labyrinth[xCord-1][yCord]);
-            Tile oben          = new Tile(xCord, yCord-1, labyrinth[xCord][yCord-1]);
-            Tile rechts        = new Tile(xCord+1, yCord, labyrinth[xCord+1][yCord]);
-            Tile unten         = new Tile(xCord, yCord+1, labyrinth[xCord][yCord+1]);
-
-            //TODO wenn zwei schritte gegangen werden wird die linksOben usw. Überprüfung überflüssig
-
-            Tile linksOben     = new Tile(xCord-1, yCord-1, labyrinth[xCord-1][yCord-1]);
-            Tile rechtsOben    = new Tile(xCord+1, yCord-1, labyrinth[xCord+1][yCord-1]);
-            Tile linksUnten    = new Tile(xCord-1, yCord+1, labyrinth[xCord-1][yCord+1]);
-            Tile rechtsUnten   = new Tile(xCord+1, yCord+1, labyrinth[xCord+1][yCord+1]);
-
-            Tile linksLinks = null;
-            Tile obenOben = null;
-            Tile rechtsRechts = null;
-            Tile untenUnten = null;
-            try {
-                linksLinks    = new Tile(xCord-2, yCord, labyrinth[xCord-2][yCord]);
-            } catch (IndexOutOfBoundsException e) {
-
-            }
-            try {
-                obenOben    = new Tile(xCord, yCord-2, labyrinth[xCord][yCord-2]);
-            } catch (IndexOutOfBoundsException e) {
-
-            }
-            try {
-                rechtsRechts    = new Tile(xCord+2, yCord, labyrinth[xCord+2][yCord]);
-            } catch (IndexOutOfBoundsException e) {
-
-            }
-            try {
-                untenUnten    = new Tile(xCord, yCord+2, labyrinth[xCord][yCord+2]);
-            } catch (IndexOutOfBoundsException e) {
-
-            }
-
-            boolean tileGoodToBeSet = false;
-            if (tryDirection == DIR_LINKS) {
-                if(!isPathOrRand(links) && !isPath(linksOben) && !isPath(linksUnten)) {
-                    tileGoodToBeSet = true;
-                }
-            } else if(tryDirection == DIR_RECHTS) {
-                if(!isPathOrRand(rechts) && !isPath(rechtsOben) && !isPath(rechtsUnten)) {
-                    tileGoodToBeSet = true;
-                }
-            } else if(tryDirection == DIR_UNTEN) {
-                if(!isPathOrRand(unten) && !isPath(rechtsUnten) && !isPath(linksUnten)) {
-                    tileGoodToBeSet = true;
-                }
-            } else if(tryDirection == DIR_OBEN) {
-                if(!isPathOrRand(oben) && !isPath(rechtsOben) && !isPath(linksOben)) {
-                    tileGoodToBeSet = true;
-                }
-            }
-
-            failedTrysToGenerateNextTile++;
-
-            if(tileGoodToBeSet) {
-                direction = tryDirection;
-                setATileOnRightPath(tryTile);
-                failedTrysToGenerateNextTile = 0;
-            }
-*/
 
             if(failedTrysToGenerateNextTile >= 250) {
                 break;
@@ -273,135 +194,6 @@ public class Algorithmus {
         }
         return nextTile;
     }
-
-    /*private static void generateLayers() {
-        int xstart = 1;
-        int ystart = 1;
-        int xstop = breite - 2;
-        int ystop = hoehe - 2;
-        boolean xstartModify = true;
-        boolean ystartModify = true;
-        boolean xstopModify = true;
-        boolean ystopModify = true;
-
-        while(xstartModify || ystartModify || xstartModify || ystopModify) {
-            for (int i = xstart; i <= xstop; i++) {
-                setTile(i, ystart);
-                //labyrinth[i][ystart] = wall;
-            }
-            for (int i = xstart; i <= xstop; i++) {
-                setTile(i, ystop);
-                //labyrinth[i][ystop] = wall;
-            }
-            for (int i = ystart; i <= ystop; i++) {
-                setTile(xstart, i);
-                //labyrinth[xstart][i] = wall;
-            }
-            for (int i = ystart; i <= ystop; i++) {
-                setTile(xstop, i);
-                //labyrinth[xstop][i] = wall;
-            }
-
-            if(!((ystop - 1) - (ystart + 1) > 3)) {
-                if(labyrinth[breite/2][ystop - 1] == 4) {
-                    ystopModify = false;
-                }
-                if(labyrinth[breite/2][ystart + 1] == 4) {
-                    ystartModify = false;
-                }
-            }
-            if(!((xstop - 1) - (xstart + 1) > 3)) {
-                if (labyrinth[xstop - 1][hoehe/2] == 4) {
-                    xstopModify = false;
-                }
-                if (labyrinth[xstart + 1][hoehe/2] == 4) {
-                    xstartModify = false;
-                }
-            }
-            if(xstartModify) {
-                xstart++;
-            }
-            if(ystartModify) {
-                ystart++;
-            }
-            if(xstopModify) {
-                xstop--;
-            }
-            if(ystopModify) {
-                ystop--;
-            }
-
-        }
-    }*/
-
-    /*private static void setTile(int xCord, int yCord) {
-         Tile diesesTile = new Tile(xCord, yCord, labyrinth[xCord][yCord]);
-         if(diesesTile.tileStatus == 0) {
-
-             Tile links         = new Tile(xCord-1, yCord, labyrinth[xCord-1][yCord]);
-             Tile oben          = new Tile(xCord, yCord-1, labyrinth[xCord][yCord-1]);
-             Tile rechts        = new Tile(xCord+1, yCord, labyrinth[xCord+1][yCord]);
-             Tile unten         = new Tile(xCord, yCord+1, labyrinth[xCord][yCord+1]);
-
-             Tile linksOben     = new Tile(xCord-1, yCord-1, labyrinth[xCord-1][yCord-1]);
-             Tile rechtsOben    = new Tile(xCord+1, yCord-1, labyrinth[xCord+1][yCord-1]);
-             Tile linksUnten    = new Tile(xCord-1, yCord+1, labyrinth[xCord-1][yCord+1]);
-             Tile rechtsUnten   = new Tile(xCord+1, yCord+1, labyrinth[xCord+1][yCord+1]);
-
-             Tile linksLinks = null;
-             Tile obenOben = null;
-             Tile rechtsRechts = null;
-             Tile untenUnten = null;
-             try {
-
-             } catch (IndexOutOfBoundsException e) {
-                 linksLinks    = new Tile(xCord-2, yCord, labyrinth[xCord-2][yCord]);
-             }
-             try {
-                 obenOben    = new Tile(xCord, yCord-2, labyrinth[xCord][yCord-2]);
-             } catch (IndexOutOfBoundsException e) {
-
-             }
-             try {
-                 rechtsRechts    = new Tile(xCord+2, yCord, labyrinth[xCord+2][yCord]);
-             } catch (IndexOutOfBoundsException e) {
-
-             }
-             try {
-                 untenUnten    = new Tile(xCord, yCord+2, labyrinth[xCord][yCord+2]);
-             } catch (IndexOutOfBoundsException e) {
-
-             }
-
-
-             if(!(aktTile.equalsThisTile(links) || aktTile.equalsThisTile(rechts) || aktTile.equalsThisTile(oben) || aktTile.equalsThisTile(unten))) {
-                 setATileToWall(diesesTile);
-             } else {
-                 if(aktTile.equalsThisTile(links)) {
-                     if(linksLinks == null) {
-                         setATileOnRightPath(diesesTile);
-                     }
-                 } else if(aktTile.equalsThisTile(rechts)) {
-                     if(rechtsRechts == null) {
-                         setATileOnRightPath(diesesTile);
-                     }
-                 } else if(aktTile.equalsThisTile(oben)) {
-                     if(obenOben == null) {
-                         setATileOnRightPath(diesesTile);
-                     }
-                 } else if(aktTile.equalsThisTile(unten)) {
-                    if(untenUnten == null) {
-                        setATileOnRightPath(diesesTile);
-                     }
-                 } else {
-                     setATileToWall(diesesTile);
-                 }
-
-
-             }
-
-         }
-    }*/
 
     private static void setATileToWall(Tile diesesTile) {
         diesesTile.setTileStatus(WALL);
