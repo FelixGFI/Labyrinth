@@ -86,20 +86,20 @@ public class Algorithmus {
                         setATileOnRightPath(tryTile);
                         //allPathTiles.add(tryTile);
                         middleReached = true;
-                        break;
+                        //break;
                     } else {
                         setATileOnRightPath(tryTile);
                         //allPathTiles.add(tryTile);
                         setATileOnRightPath(tryTile2);
                         allPathTiles.add(tryTile2);
                         middleReached = true;
-                        break;
+                        //break;
                     }
                 } else if(isNextToMiddle(tryTile) && !middleReached){
                     setATileOnRightPath(tryTile);
                     //allPathTiles.add(tryTile);
                     middleReached = true;
-                    break;
+                    //break;
                 } else {
                     if(!isAllreadySet(tryTile) && !isAllreadySet(tryTile2)) {
                         setATileOnRightPath(tryTile);
@@ -115,6 +115,7 @@ public class Algorithmus {
 
 
             }
+
 
             /*tryTile = getNextTile(tryDirection);
 
@@ -186,18 +187,22 @@ public class Algorithmus {
             }
 */
 
-            System.out.println(failedTrysToGenerateNextTile);
-
-            if(failedTrysToGenerateNextTile >= 50) {
+            if(failedTrysToGenerateNextTile >= 250) {
                 break;
             }
 
-            if(failedTrysToGenerateNextTile > 10 && !middleReached) {
+            if(failedTrysToGenerateNextTile > 10) {
                 try{
                     labyrinth[aktTile.getxCord()][aktTile.getyCord()] = RIGHT_PATH;
-                    aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
+                    if (middleReached){
+                        int number = (int) (Math.random() * allPathTiles.size());
+                        aktTile = allPathTiles.get(number);
+                        System.out.println(number);
+                    } else {
+                        aktTile = allPathTiles.get(allPathTiles.indexOf(aktTile) - 1);
+                        failedTrysToGenerateNextTile = 0;
+                    }
                     labyrinth[aktTile.getxCord()][aktTile.getyCord()] = AKT_PATH;
-                    failedTrysToGenerateNextTile = 0;
                 } catch (Exception e) {
                     System.out.println("Generation Failed. Please Try again.");
                 }
@@ -446,10 +451,24 @@ public class Algorithmus {
 
 
         if(y == -1) {
-            y = (int)( Math.random() * (hoehe - 2)) + 1;
+            boolean foundUnevenCord = false;
+            while(!foundUnevenCord) {
+                int num = (int)( Math.random() * (hoehe - 2)) + 1;
+                if(num % 2 != 0) {
+                    y = num;
+                    foundUnevenCord = true;
+                }
+            }
         }
         if(x == -1) {
-            x = (int)( Math.random() * (breite - 2)) + 1;
+            boolean foundUnevenCord = false;
+            while(!foundUnevenCord) {
+                int num = (int)( Math.random() * (breite - 2)) + 1;
+                if(num % 2 != 0) {
+                    x = num;
+                    foundUnevenCord = true;
+                }
+            }
         }
         labyrinth[x][y] = AKT_PATH;
         aktTile = new Tile(x, y, labyrinth[x][y]);
@@ -476,15 +495,15 @@ public class Algorithmus {
                 } else if (labyrinth[x][y] == SIDE_PATH) {
                     System.out.print("s");
                 } else if (labyrinth[x][y] == RIGHT_PATH) {
-                    System.out.print("p");
+                    System.out.print(" ");
                 }else if (labyrinth[x][y] == MIDDLE) {
-                    System.out.print("z");
+                    System.out.print(" ");
                 } else if (labyrinth[x][y] == RAND) {
                     System.out.print("+");
                 } else if(labyrinth[x][y] == AKT_PATH) {
-                    System.out.print("c");
-                } else {
                     System.out.print(" ");
+                } else {
+                    System.out.print("+");
                 }
             }
             System.out.println();
